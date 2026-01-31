@@ -7,35 +7,96 @@ import { useEffect, useRef, useState } from "react"
 export function HeroSection() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [opacity, setOpacity] = useState(1)
+  const scriptRef = useRef<HTMLScriptElement | null>(null)
+  const [iframeLoaded, setIframeLoaded] = useState(false)
 
   useEffect(() => {
-    // Load Vimeo Player API
-    const script = document.createElement("script")
-    script.src = "https://player.vimeo.com/api/player.js"
-    script.async = true
-    document.body.appendChild(script)
+    // Check if script already exists
+    let script = document.querySelector('script[src="https://player.vimeo.com/api/player.js"]') as HTMLScriptElement
+    
+    if (!script) {
+      // Load Vimeo Player API
+      script = document.createElement("script")
+      script.src = "https://player.vimeo.com/api/player.js"
+      script.async = true
+      script.id = "vimeo-player-api"
+      document.body.appendChild(script)
+      scriptRef.current = script
+    }
 
-    script.onload = () => {
-      if (iframeRef.current && window.Vimeo) {
-        const player = new window.Vimeo.Player(iframeRef.current)
+    let checkInterval: NodeJS.Timeout | null = null
 
-        player.on("timeupdate", (data: { seconds: number; duration: number }) => {
-          const timeRemaining = data.duration - data.seconds
-          if (timeRemaining <= 0.8) {
-            setOpacity(timeRemaining / 0.8)
-          } else if (data.seconds <= 0.5) {
-            setOpacity(Math.min(1, data.seconds / 0.5 + 0.4))
-          } else {
-            setOpacity(1)
-          }
-        })
+    const initializePlayer = () => {
+      if (iframeRef.current && window.Vimeo && iframeLoaded) {
+        try {
+          const player = new window.Vimeo.Player(iframeRef.current)
+
+          player.on("timeupdate", (data: { seconds: number; duration: number }) => {
+            const timeRemaining = data.duration - data.seconds
+            if (timeRemaining <= 0.8) {
+              setOpacity(timeRemaining / 0.8)
+            } else if (data.seconds <= 0.5) {
+              setOpacity(Math.min(1, data.seconds / 0.5 + 0.4))
+            } else {
+              setOpacity(1)
+            }
+          })
+
+          // Ensure video is playing
+          player.getPaused().then((paused: boolean) => {
+            if (paused) {
+              player.play().catch((error: Error) => {
+                console.error("Error playing video:", error)
+              })
+            }
+          })
+        } catch (error) {
+          console.error("Error initializing Vimeo player:", error)
+        }
+      }
+    }
+
+    const tryInitialize = () => {
+      if (window.Vimeo && iframeLoaded) {
+        setTimeout(initializePlayer, 200)
+        return true
+      }
+      return false
+    }
+
+    // Try to initialize immediately if both are ready
+    if (!tryInitialize()) {
+      // Set up polling to check when both are ready
+      checkInterval = setInterval(() => {
+        if (tryInitialize() && checkInterval) {
+          clearInterval(checkInterval)
+        }
+      }, 100)
+    }
+
+    // If script not loaded yet, also wait for it
+    if (!window.Vimeo) {
+      script.onload = () => {
+        if (!tryInitialize() && !checkInterval) {
+          checkInterval = setInterval(() => {
+            if (tryInitialize() && checkInterval) {
+              clearInterval(checkInterval)
+            }
+          }, 100)
+        }
       }
     }
 
     return () => {
-      document.body.removeChild(script)
+      if (checkInterval) {
+        clearInterval(checkInterval)
+      }
+      // Only remove script if we added it
+      if (scriptRef.current && scriptRef.current.parentNode) {
+        scriptRef.current.parentNode.removeChild(scriptRef.current)
+      }
     }
-  }, [])
+  }, [iframeLoaded])
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
@@ -43,10 +104,13 @@ export function HeroSection() {
       <div className="absolute inset-0 h-full w-full transition-opacity duration-200" style={{ opacity }}>
         <iframe
           ref={iframeRef}
-          src="https://player.vimeo.com/video/1153729244?background=1&autoplay=1&loop=1&muted=1&quality=1080p"
-          className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
-          allow="autoplay; fullscreen"
+          src="https://player.vimeo.com/video/1153729244?background=1&autoplay=1&loop=1&muted=1&quality=1080p&controls=0"
+          className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
           title="Background video"
+          style={{ border: 0 }}
+          onLoad={() => setIframeLoaded(true)}
         />
       </div>
 

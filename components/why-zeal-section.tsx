@@ -48,6 +48,9 @@ export function WhyZealSection() {
                   alt={feature.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  quality={80}
+                  loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
                 {/* Gradient overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-zeal-purple/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

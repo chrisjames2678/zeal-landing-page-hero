@@ -14,7 +14,15 @@ export function Header() {
       <div className="flex w-full items-center justify-between px-6 md:px-12 lg:px-16 py-0">
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <Image src="/images/zeal-logo.png" alt="Zeal" width={180} height={60} className="h-14 w-auto md:h-32" />
+          <Image 
+            src="/images/zeal-logo.png" 
+            alt="Zeal" 
+            width={180} 
+            height={60} 
+            className="h-14 w-auto md:h-32" 
+            priority
+            quality={90}
+          />
         </Link>
 
         <div className="flex items-center gap-6 md:gap-8">

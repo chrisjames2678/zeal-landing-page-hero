@@ -104,6 +104,9 @@ export function WhatsIncludedSection() {
                     alt={item.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    quality={80}
+                    loading="lazy"
+                    sizes="(max-width: 640px) 280px, (max-width: 768px) 300px, 320px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-zeal-black via-zeal-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">

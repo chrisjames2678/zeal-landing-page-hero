@@ -50,6 +50,9 @@ export function TripsSection() {
                   alt={trip.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  quality={80}
+                  loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

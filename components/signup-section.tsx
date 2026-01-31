@@ -105,6 +105,9 @@ export function SignupSection() {
                 alt="Group of travelers enjoying an immersive experience together"
                 fill
                 className="object-cover"
+                quality={85}
+                loading="lazy"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
           </div>
