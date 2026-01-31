@@ -91,7 +91,7 @@
 @theme inline {
   /* Adding Zeal brand fonts and colors */
   --font-sans: var(--font-sans, "DM Sans"), "DM Sans Fallback", system-ui;
-  --font-heading: var(--font-heading, "Hussar Bold"), "Arial Black", sans-serif;
+  --font-heading: "Arial Black", system-ui, -apple-system, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
 
   /* Zeal Brand Colors */

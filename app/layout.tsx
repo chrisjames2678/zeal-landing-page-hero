@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { DM_Sans } from "next/font/google"
-import localFont from "next/font/local"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
@@ -9,18 +8,6 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
-})
-
-const hussar = localFont({
-  src: [
-    {
-      path: "../public/fonts/HussarBold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-heading",
-  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -53,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${hussar.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} font-sans antialiased`}>
         {children}
         <Analytics />
       </body>
