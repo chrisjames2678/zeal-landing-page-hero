@@ -75,6 +75,64 @@
   --color-zeal-white: #ffffff;
   --color-zeal-accent: #e85d26;
   --color-zeal-accent-hover: #d14e1d;
+  --color-zeal-moss: #4b5c43;
+  --color-zeal-moss-tint: #eaefe4;
+}
+
+/* ---------- ROUTE MAP (Leaflet) ----------
+   These target Leaflet-generated DOM (divIcon/popup HTML strings, and
+   Leaflet's own classes) that sits outside React's tree, so they can't be
+   styled via className/Tailwind — kept as plain CSS instead. */
+.leaflet-tile-pane {
+  filter: sepia(8%) saturate(70%) brightness(1.02) contrast(0.96);
+}
+.stop-pin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-zeal-accent);
+  border: 3px solid var(--color-zeal-white);
+  box-shadow: 0 0 0 1px var(--color-zeal-accent);
+}
+.stop-pin.start {
+  background: var(--color-zeal-moss);
+  box-shadow: 0 0 0 1px var(--color-zeal-moss);
+}
+.stop-pin-hit {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.transfer-badge {
+  background: var(--color-zeal-white);
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+  padding: 4px 9px 4px 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-zeal-mid);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(10, 10, 10, 0.08);
+}
+.transfer-badge svg {
+  flex: none;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  font-family: var(--font-sans);
+}
+.leaflet-popup-content {
+  font-size: 13px;
+  margin: 9px 12px;
+}
+.leaflet-popup-content b {
+  font-family: var(--font-serif);
+  font-size: 14px;
 }
 
 @layer base {
