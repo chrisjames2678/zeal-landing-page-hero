@@ -50,12 +50,16 @@ export function TripCard({ trip }: TripCardProps) {
           {trip.location} &middot; {trip.duration}
         </p>
 
-        {/* Hover reveal description — line-clamped rather than height-
-            animated, so it can never overflow the card regardless of how
-            long a given trip's description text is. */}
-        <p className="text-[0.8rem] text-white/50 leading-relaxed mt-3 line-clamp-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          {trip.description}
-        </p>
+        {/* Hover reveal description. Animates the grid row from 0fr to 1fr
+            (rather than guessing a max-height in px) so it collapses to
+            truly zero height at rest and always grows to fully reveal the
+            complete text on hover, however long it is — no truncation,
+            no risk of it overflowing the card either way. */}
+        <div className="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr]">
+          <p className="mt-3 overflow-hidden text-[0.8rem] text-white/50 leading-relaxed opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            {trip.description}
+          </p>
+        </div>
       </div>
     </Link>
   )
