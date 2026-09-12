@@ -57,12 +57,12 @@ export function TripPriceSidebar({ trip }: TripPriceSidebarProps) {
         </div>
       )}
 
-      <a
-        href="#"
+      <Link
+        href={`/enquire?trip=${trip.slug}`}
         className="block rounded-[9px] bg-zeal-accent px-[18px] py-3.5 text-center text-[15px] font-bold text-zeal-white transition-colors hover:bg-zeal-accent-hover"
       >
         Enquire about this trip
-      </a>
+      </Link>
       {trip.faq && trip.faq.length > 0 && (
         <Link
           href="#faq"
