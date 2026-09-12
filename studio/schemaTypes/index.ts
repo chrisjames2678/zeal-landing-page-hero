@@ -1,3 +1,4 @@
 import trip from './trip'
-   // in the exported array:
-   export const schemaTypes = [trip]
+import {mediaItem} from './mediaItem'
+
+export const schemaTypes = [trip, mediaItem]

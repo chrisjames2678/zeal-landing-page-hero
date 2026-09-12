@@ -158,6 +158,18 @@ export default defineType({
               fields: [
                 defineField({name: 'name', title: 'Name', type: 'string'}),
                 defineField({name: 'region', title: 'Region (optional)', type: 'string'}),
+                defineField({
+                  name: 'lat',
+                  title: 'Latitude',
+                  type: 'number',
+                  description:
+                    'Only needed for stops shown on the route map — typically overnight-stop locations, not every specific place visited.',
+                }),
+                defineField({
+                  name: 'lng',
+                  title: 'Longitude',
+                  type: 'number',
+                }),
               ],
               preview: {select: {title: 'name', subtitle: 'region'}},
             }),
@@ -172,6 +184,21 @@ export default defineType({
           of: [defineArrayMember({type: 'string'})],
         }),
       ],
+    }),
+    defineField({
+      name: 'heroMedia',
+      title: 'Hero media',
+      type: 'mediaItem',
+      group: 'identity',
+      description: 'The main image or video for this trip — shown first on the page.',
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
+      group: 'identity',
+      of: [defineArrayMember({type: 'mediaItem'})],
+      description: 'Supporting photos and video clips, shown alongside the hero.',
     }),
     defineField({
       name: 'whyThisDestination',
@@ -189,7 +216,7 @@ export default defineType({
       group: 'identity',
       description:
         'Your answer-first snippet. Keep it short, literal, and standalone — the sentence most likely to be quoted whole. Should make sense with zero surrounding context.',
-      validation: (Rule) => Rule.max(220),
+      validation: (Rule) => Rule.max(260),
     }),
     defineField({
       name: 'slug',
@@ -502,7 +529,13 @@ export default defineType({
           type: 'object',
           name: 'comparisonRow',
           fields: [
-            defineField({name: 'aspect', title: 'Aspect', type: 'string'}),
+            defineField({
+              name: 'aspect',
+              title: 'Aspect',
+              type: 'string',
+              description:
+                'Internal organising label only — confirmed NOT to be rendered on the frontend. Kept here to help whoever fills in Sanity understand what each comparison row is about.',
+            }),
             defineField({name: 'typicalTour', title: 'Typical (per "Compared to")', type: 'string'}),
             defineField({name: 'zealTrip', title: 'This Zeal trip', type: 'string'}),
           ],
