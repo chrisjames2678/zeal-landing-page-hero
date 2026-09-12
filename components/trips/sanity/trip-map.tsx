@@ -21,6 +21,12 @@ export function TripMap({ stops }: TripMapProps) {
   useEffect(() => {
     if (!containerRef.current || stops.length === 0) return
 
+    // React (Strict Mode, in dev) can run this effect, clean it up, and run
+    // it again before the async imports below resolve. Without this guard,
+    // the first run's now-stale callback still fires afterward and tries to
+    // call L.map() on a container the second run already initialized —
+    // Leaflet throws "Map container is already initialized" for that.
+    let cancelled = false
     let map: import("leaflet").Map | undefined
     let onResize: (() => void) | undefined
     let onOrientation: (() => void) | undefined
@@ -31,7 +37,11 @@ export function TripMap({ stops }: TripMapProps) {
     // loaded here — inside an effect, which only ever runs in the browser.
     Promise.all([import("leaflet"), import("leaflet-polylinedecorator")]).then(
       ([leafletModule]) => {
-        if (!containerRef.current) return
+        if (cancelled || !containerRef.current) return
+        // Defensive fallback: if this container somehow already has a live
+        // Leaflet instance attached (the exact race this guard is for),
+        // don't try to initialize a second one on top of it.
+        if ((containerRef.current as any)._leaflet_id) return
         const L = leafletModule.default as any
 
         const isTouch =
@@ -143,6 +153,7 @@ export function TripMap({ stops }: TripMapProps) {
     )
 
     return () => {
+      cancelled = true
       if (onResize) window.removeEventListener("resize", onResize)
       if (onOrientation) window.removeEventListener("orientationchange", onOrientation)
       if (onVeilTap && veilEl) veilEl.removeEventListener("click", onVeilTap)
