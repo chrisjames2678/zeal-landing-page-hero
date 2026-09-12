@@ -50,8 +50,10 @@ export function TripCard({ trip }: TripCardProps) {
           {trip.location} &middot; {trip.duration}
         </p>
 
-        {/* Hover reveal description */}
-        <p className="text-[0.8rem] text-white/50 leading-relaxed mt-3 max-h-0 overflow-hidden opacity-0 transition-all duration-500 group-hover:max-h-24 group-hover:opacity-100">
+        {/* Hover reveal description — line-clamped rather than height-
+            animated, so it can never overflow the card regardless of how
+            long a given trip's description text is. */}
+        <p className="text-[0.8rem] text-white/50 leading-relaxed mt-3 line-clamp-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
           {trip.description}
         </p>
       </div>
