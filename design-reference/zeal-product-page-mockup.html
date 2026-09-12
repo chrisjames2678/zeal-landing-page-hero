@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colombia Coffee — Zeal (Product Page Mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.js"></script>
+<style>
+  :root{
+    --paper:#FAF6EF;
+    --card:#FFFFFF;
+    --ink:#221D16;
+    --ink-soft:#5B5346;
+    --line:#E6DDC9;
+    --accent:#E85D26;
+    --accent-deep:#B8431A;
+    --accent-tint:#FCEBE1;
+    --moss:#4B5C43;
+    --moss-tint:#EAEFE4;
+    --maxw:1120px;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'DM Sans', sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.12;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  .eyebrow{
+    font-family:'DM Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.11em;
+    text-transform:uppercase;
+    color:var(--accent-deep);
+    font-weight:500;
+  }
+  .mockup-banner{
+    background:var(--ink);
+    color:#F4EFE4;
+    font-family:'DM Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    text-align:center;
+    padding:9px 12px;
+  }
+  .mockup-banner b{color:var(--accent);}
+
+  /* ---------- HEADER ---------- */
+  header.site{
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+  }
+  header.site .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .logo{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:21px;
+    letter-spacing:-0.01em;
+  }
+  .crumbs{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:16px 0 0;
+  }
+  .crumbs a{color:var(--ink-soft); text-decoration:none; padding:4px 2px; display:inline-block;}
+  .crumbs a:hover{color:var(--accent-deep);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding-top:22px;}
+  .photo-grid{
+    display:grid;
+    grid-template-columns:1.6fr 1fr;
+    gap:10px;
+    margin-top:18px;
+    height:420px;
+  }
+  .photo-grid .sub{display:grid; grid-template-rows:1fr 1fr; gap:10px;}
+  .ph{
+    border-radius:var(--radius);
+    background:
+      repeating-linear-gradient(135deg, rgba(34,29,22,0.05) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, #E9DEC6, #DCCBA6);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+    color:var(--ink-soft);
+  }
+  .ph span{
+    font-family:'DM Mono', monospace;
+    font-size:12px;
+    padding:10px 12px;
+    background:rgba(250,246,239,0.82);
+    margin:10px;
+    border-radius:6px;
+    letter-spacing:0.02em;
+  }
+
+  .title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:40px;
+    margin-top:26px;
+    flex-wrap:wrap;
+  }
+  .title-row h1{font-size:42px; max-width:640px;}
+  .tagpills{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+  .pill{
+    font-family:'DM Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.03em;
+    padding:6px 11px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+  .pill.moss{background:var(--moss-tint); color:var(--moss); border-color:transparent;}
+
+  .summary{
+    max-width:620px;
+    font-size:17px;
+    color:var(--ink-soft);
+    margin-top:16px;
+  }
+
+  /* ---------- LAYOUT: content + sticky sidebar ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:48px;
+    margin-top:40px;
+    align-items:start;
+  }
+  /* Grid items default to a minimum width equal to their widest unbreakable
+     content — without this, the transfer-time badges inside the map (which
+     never wrap) would force this whole column, and the page, wider than the
+     screen. This tells both columns they're allowed to shrink normally. */
+  .layout > *{min-width:0;}
+  .side{position:sticky; top:24px;}
+
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px;
+  }
+  .price-card .from{font-size:13px; color:var(--ink-soft); margin-bottom:2px;}
+  .price-card .amount{font-family:'Fraunces', serif; font-size:32px; font-weight:600;}
+  .price-card .amount sup{font-size:14px; font-weight:500; color:var(--ink-soft); top:-0.6em;}
+  .price-note{font-size:12px; color:var(--ink-soft); margin-top:4px;}
+  .price-facts{
+    display:flex; flex-direction:column; gap:9px;
+    margin:18px 0 20px;
+    padding:16px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .price-facts .row{display:flex; justify-content:space-between; color:var(--ink-soft);}
+  .price-facts .row b{color:var(--ink); font-weight:500;}
+  .btn-primary{
+    display:block; text-align:center;
+    background:var(--accent); color:#fff;
+    font-family:'DM Sans', sans-serif; font-weight:700; font-size:15px;
+    padding:14px 18px; border-radius:9px;
+    text-decoration:none;
+    border:none; width:100%; cursor:pointer;
+  }
+  .btn-primary:hover{background:var(--accent-deep);}
+  .btn-secondary{
+    display:block; text-align:center;
+    background:transparent; color:var(--ink);
+    font-family:'DM Sans', sans-serif; font-weight:500; font-size:14px;
+    padding:14px 18px; border-radius:9px;
+    border:1px solid var(--line);
+    margin-top:9px; text-decoration:none;
+  }
+  .trust-line{
+    font-size:12px; color:var(--ink-soft); text-align:center; margin-top:12px;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section.block{margin-top:64px;}
+  .block h2{font-size:27px; margin-bottom:6px;}
+  .block .lede{color:var(--ink-soft); font-size:15px; margin-bottom:24px; max-width:640px;}
+
+  /* ---------- HIGHLIGHTS ---------- */
+  .highlight-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px 28px;
+    list-style:none; padding:0; margin:0;
+  }
+  .highlight-list li{
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:15px;
+  }
+  .highlight-list .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--accent);
+    margin-top:8px; flex:none;
+  }
+
+  /* ---------- ZEAL EDGE ---------- */
+  .edge-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+  }
+  .edge-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+  }
+  .edge-card h3{font-size:16px; margin-bottom:10px; font-weight:600;}
+  .edge-card p, .edge-card li{font-size:14.5px; color:var(--ink-soft);}
+  .edge-card ul{margin:0; padding-left:18px;}
+  .edge-card ul li{margin-bottom:6px;}
+  .experts{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px;}
+  .experts li{font-size:14.5px;}
+  .experts b{display:block; color:var(--ink); font-weight:600; font-size:15px;}
+  .experts span{color:var(--ink-soft);}
+  .skill-pills{display:flex; flex-wrap:wrap; gap:7px; margin-top:4px;}
+  .skill-pills span{
+    font-size:12.5px; padding:5px 10px; border-radius:100px;
+    background:var(--accent-tint); color:var(--accent-deep);
+    font-family:'DM Mono', monospace;
+  }
+
+  /* ---------- STAT STRIP ---------- */
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden;
+    gap:1px;
+    background:var(--line);
+  }
+  .stat{
+    padding:20px;
+    background:var(--card);
+  }
+  .stat .fact{font-family:'Fraunces', serif; font-size:15px; font-weight:600; line-height:1.25;}
+
+  /* ---------- ITINERARY ---------- */
+  .day{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:20px;
+    padding:24px 0;
+    border-top:1px solid var(--line);
+  }
+  .day:last-child{border-bottom:1px solid var(--line);}
+  .daynum{
+    font-family:'Fraunces', serif; font-size:26px; font-weight:600; color:var(--accent);
+  }
+  .day h4{font-size:18px; margin-bottom:10px;}
+  .day .happens{font-size:14.5px; color:var(--ink-soft); margin-bottom:14px;}
+  .day .happens ul{margin:6px 0 0; padding-left:18px;}
+  .day .happens li{margin-bottom:4px;}
+  .meta-row{display:flex; flex-wrap:wrap; gap:8px 20px; font-size:13px; color:var(--ink-soft);}
+  .meta-row .item{display:flex; gap:6px; align-items:center;}
+  .meta-row .lbl{font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-soft); opacity:0.75;}
+  .meals{display:flex; gap:4px;}
+  .meal-chip{
+    font-family:'DM Mono', monospace; font-size:10.5px;
+    width:18px; height:18px; border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--moss-tint); color:var(--moss); font-weight:600;
+  }
+  .extra-note{
+    margin-top:10px; font-size:13px; color:var(--accent-deep);
+    background:var(--accent-tint); display:inline-block;
+    padding:5px 10px; border-radius:6px;
+  }
+
+  /* ---------- COMPARISON TABLE ---------- */
+  table.compare{width:100%; border-collapse:collapse; font-size:14.5px;}
+  table.compare th, table.compare td{
+    text-align:left; padding:12px 16px; border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  table.compare thead th{
+    font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--ink-soft); font-weight:500; border-bottom:1px solid var(--ink);
+  }
+  table.compare td.zeal{color:var(--moss); font-weight:500;}
+  table.compare tr:first-child td{padding-top:16px;}
+
+  @media (max-width:640px){
+    table.compare thead{display:none;}
+    table.compare, table.compare tbody, table.compare tr, table.compare td{display:block; width:100%;}
+    table.compare tr{
+      border:1px solid var(--line); border-radius:10px;
+      padding:14px 16px; margin-bottom:12px;
+      background:var(--card);
+    }
+    table.compare tr:first-child td{padding-top:0;}
+    table.compare td{border-bottom:none; padding:6px 0;}
+    table.compare td::before{
+      content:attr(data-label);
+      display:block;
+      font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.05em; text-transform:uppercase;
+      color:var(--ink-soft); margin-bottom:3px;
+    }
+  }
+
+  /* ---------- INCLUDED / EXCLUDED ---------- */
+  .inc-grid{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .inc-list{list-style:none; padding:0; margin:0;}
+  .inc-list li{
+    font-size:14.5px; padding:9px 0; border-bottom:1px solid var(--line);
+    display:flex; gap:10px;
+  }
+  .inc-list li:last-child{border-bottom:none;}
+  .inc-list.no li{color:var(--ink-soft);}
+  .mark{font-weight:600;}
+  .inc-list.yes .mark{color:var(--moss);}
+  .inc-list.no .mark{color:var(--ink-soft);}
+
+  /* ---------- FACTS TABLE ---------- */
+  .facts-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:0;
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  }
+  .fact-cell{
+    padding:16px 20px; border-bottom:1px solid var(--line); border-right:1px solid var(--line);
+  }
+  .fact-cell:nth-child(2n){border-right:none;}
+  .fact-cell .k{font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:4px;}
+  .fact-cell .v{font-size:14.5px; font-weight:500;}
+
+  /* ---------- FAQ ---------- */
+  details.faq{
+    border-bottom:1px solid var(--line);
+    padding:16px 0;
+  }
+  details.faq summary{
+    cursor:pointer; font-size:15.5px; font-weight:600;
+    list-style:none; display:flex; justify-content:space-between; align-items:center;
+  }
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::after{
+    content:'+'; font-family:'Fraunces', serif; font-size:20px; color:var(--accent); margin-left:20px;
+  }
+  details.faq[open] summary::after{content:'–';}
+  details.faq p{font-size:14.5px; color:var(--ink-soft); margin:12px 0 0;}
+  .faq-tag{
+    font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--accent-deep); background:var(--accent-tint); padding:2px 7px; border-radius:5px; margin-left:10px;
+  }
+
+  footer{
+    margin-top:80px; padding:40px 0 60px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--ink-soft); text-align:center;
+  }
+  footer .wrap{padding:0 28px;}
+
+  /* ---------- ROUTE MAP ---------- */
+  #route-map{
+    height:360px;
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .leaflet-tile-pane{ filter: sepia(8%) saturate(70%) brightness(1.02) contrast(0.96); }
+  .stop-pin{
+    width:14px; height:14px; border-radius:50%;
+    background:var(--accent); border:3px solid var(--card);
+    box-shadow:0 0 0 1px var(--accent);
+  }
+  .stop-pin.start{background:var(--moss); box-shadow:0 0 0 1px var(--moss);}
+  .stop-pin-hit{
+    width:44px; height:44px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .transfer-badge{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:100px; padding:4px 9px 4px 6px;
+    font-family:'DM Mono', monospace; font-size:12px; color:var(--ink-soft);
+    display:flex; align-items:center; gap:5px; white-space:nowrap;
+    box-shadow:0 1px 3px rgba(34,29,22,0.08);
+  }
+  .transfer-badge svg{flex:none;}
+  .map-touch-veil{
+    position:absolute; inset:0; z-index:1000;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(34,29,22,0.28);
+    color:#fff; font-family:'DM Sans', sans-serif; font-weight:600; font-size:14px;
+    border-radius:var(--radius);
+    transition:opacity 0.25s ease;
+  }
+  .map-touch-veil.hidden{opacity:0; pointer-events:none;}
+  .leaflet-popup-content-wrapper{
+    border-radius:8px; font-family:'DM Sans', sans-serif;
+  }
+  .leaflet-popup-content{font-size:13px; margin:9px 12px;}
+  .leaflet-popup-content b{font-family:'Fraunces', serif; font-size:14px;}
+
+  @media (max-width:900px){
+    .wrap, footer .wrap{padding:0 10px;}
+    .layout{grid-template-columns:1fr;}
+    .side{position:static; margin-bottom:8px;}
+    .photo-grid{grid-template-columns:1fr; height:auto;}
+    .photo-grid .sub{grid-template-columns:1fr 1fr; grid-template-rows:none;}
+    .photo-grid .ph{height:170px;}
+    .title-row h1{font-size:32px;}
+    .stat-strip{grid-template-columns:repeat(3, 1fr);}
+  }
+
+  /* Tablet keeps 2-column grids; only true mobile widths flatten to 1 column */
+  @media (max-width:640px){
+    .highlight-list, .edge-grid, .inc-grid{grid-template-columns:1fr;}
+    .facts-grid{grid-template-columns:1fr;}
+    .fact-cell:nth-child(2n){border-right:1px solid var(--line);}
+  }
+
+  @media (max-width:480px){
+    .stat-strip{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">MOCKUP — structural template only · <b>photo blocks are placeholders</b>, not final imagery · Santa Marta / Medellín extensions intentionally omitted</div>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo">ZEAL</div>
+    <div class="pill">Enquire</div>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <p class="crumbs"><a href="#">Home</a> &nbsp;›&nbsp; <a href="#">Destinations</a> &nbsp;›&nbsp; <a href="#">Colombia</a></p>
+
+  <div class="photo-grid">
+    <div class="ph"><span>Photo — La Palma y El Tucán lab, sensory evaluation</span></div>
+    <div class="sub">
+      <div class="ph"><span>Photo — Café San Alberto, Bogotá</span></div>
+      <div class="ph"><span>Photo — Primitivo farm, Coffee Region</span></div>
+    </div>
+  </div>
+
+  <div class="title-row">
+    <div>
+      <p class="eyebrow">Food &amp; Drink · Coffee</p>
+      <h1>Colombia Coffee</h1>
+      <p class="summary">A seven-day immersion across Colombia's coffee world — from Bogotá's award-winning cafés to remote Andean farms — learning to taste, process, and evaluate specialty coffee alongside champion baristas, Q-grade labs, and multi-generational producers.</p>
+      <div class="tagpills">
+        <span class="pill moss">Immersive</span>
+        <span class="pill moss">Hands-on / active</span>
+        <span class="pill moss">Expert-led</span>
+        <span class="pill moss">Small-group</span>
+        <span class="pill moss">Privileged access</span>
+        <span class="pill moss">At-source / origin</span>
+        <span class="pill moss">Skill-building</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="main">
+
+      <!-- HIGHLIGHTS -->
+      <section class="block" id="highlights">
+        <h2>Trip highlights</h2>
+        <ul class="highlight-list">
+          <li><span class="dot"></span>A "coffee baptism" and Q-grader-style tasting with a champion barista in Bogotá</li>
+          <li><span class="dot"></span>Hands-on lab access at La Palma y El Tucán — sensory work usually reserved for certification students</li>
+          <li><span class="dot"></span>Hand-harvesting at a remote Andean farm open only by private request</li>
+          <li><span class="dot"></span>A green-coffee blending and cupping session at an export farm shipping to Dubai and beyond</li>
+          <li><span class="dot"></span>Meeting the fifth-generation IWCA women producers at Primitivo</li>
+          <li><span class="dot"></span>Contrasting artisanal micro-lots against Buencafé's freeze-dried operation, exporting to 60+ countries</li>
+        </ul>
+      </section>
+
+      <!-- ZEAL EDGE -->
+      <section class="block" id="edge">
+        <h2>The Zeal edge</h2>
+        <p class="lede">What separates this from a coffee-region sightseeing tour.</p>
+        <div class="edge-grid">
+          <div class="edge-card">
+            <h3>Who you learn from</h3>
+            <ul class="experts" style="list-style:none; padding:0;">
+              <li><b>Champion barista</b><span>Café San Alberto, Bogotá</span></li>
+              <li><b>The team at La Palma y El Tucán</b><span>hosts of the official Q Grader / Q Processing certifications</span></li>
+              <li><b>Lacía's owners</b><span>2nd &amp; 3rd generation, exporting to Dubai, the US and Europe</span></li>
+              <li><b>The Correal family</b><span>5th-generation women producers at Primitivo, IWCA members</span></li>
+            </ul>
+          </div>
+          <div class="edge-card">
+            <h3>Privileged access</h3>
+            <ul>
+              <li>Hands-on lab access at La Palma y El Tucán for sensory evaluation — normally reserved for industry professionals and certification students</li>
+              <li>"Coffee in the Clouds," a working farm that receives visitors only by private request</li>
+              <li>A private audience with the IWCA women producers at Primitivo</li>
+              <li>Behind-the-scenes access to Buencafé, an industrial operation exporting to 60+ countries</li>
+            </ul>
+          </div>
+          <div class="edge-card">
+            <h3>What you do</h3>
+            <ul>
+              <li>A sensory "coffee baptism" and private brewing session</li>
+              <li>Fermentation-process comparison and flawed-vs-excellent cup tasting</li>
+              <li>Hands-on lab sensory-evaluation exercises</li>
+              <li>Hands-on harvesting alongside a local producer</li>
+              <li>Green-coffee selection, blending, quality control and cupping</li>
+              <li>A hands-on cacao workshop, bean to fondue</li>
+            </ul>
+          </div>
+          <div class="edge-card">
+            <h3>What you'll leave able to do</h3>
+            <p>Understand and taste the full specialty chain from cherry to export cup. Cup and evaluate coffees using the Q-grader method. Read how fermentation and processing choices shape flavour. Place any coffee on the spectrum from artisanal micro-lot to industrial export.</p>
+            <div class="skill-pills">
+              <span>Cupping &amp; scoring</span>
+              <span>Fermentation &amp; processing</span>
+              <span>Lab sensory evaluation</span>
+              <span>Green-bean selection</span>
+              <span>Cacao processing</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTABLE DATA POINTS -->
+      <section class="block" id="stats">
+        <div class="stat-strip">
+          <div class="stat"><div class="fact">5th-generation family producers</div></div>
+          <div class="stat"><div class="fact">1,650m altitude, "Coffee in the Clouds"</div></div>
+          <div class="stat"><div class="fact">Exports to 60+ countries</div></div>
+          <div class="stat"><div class="fact">Hosts official Q Grader certification</div></div>
+          <div class="stat"><div class="fact">Group capped at 6–10 guests</div></div>
+        </div>
+      </section>
+
+      <!-- ROUTE MAP -->
+      <section class="block" id="route">
+        <h2>Where you'll go</h2>
+        <p class="lede">Bogotá to the Coffee Region, in order.</p>
+        <div id="route-map" style="position:relative;">
+          <div id="map-touch-veil" class="map-touch-veil">Tap to explore the map</div>
+        </div>
+      </section>
+
+      <!-- ITINERARY -->
+      <section class="block" id="itinerary">
+        <h2>Your itinerary</h2>
+        <p class="lede">7 days / 6 nights, Bogotá to the Coffee Region.</p>
+
+        <div class="day">
+          <div class="daynum">01</div>
+          <div>
+            <h4>Arrival in Bogotá</h4>
+            <div class="happens">Arrive in Bogotá and settle in. 7pm welcome dinner at a local restaurant within walking distance of the hotel.</div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Stay</span> Hotel B.O.G, Bogotá</div>
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">D</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> Airport transfer available (not included)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="daynum">02</div>
+          <div>
+            <h4>Bogotá: contemporary &amp; sensory coffee culture</h4>
+            <div class="happens">
+              <ul>
+                <li>A "coffee baptism" sensory experience and private brewing session with a champion barista at Café San Alberto</li>
+                <li>Walking tour of La Candelaria — Fragmentos, Monserrate, Plaza de Bolívar</li>
+                <li>Finishes with a tasting of 5–7 specialty coffees paired with origin cacao at Tropicalía Coffee</li>
+              </ul>
+            </div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Stay</span> Hotel B.O.G, Bogotá</div>
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">B</span><span class="meal-chip">L</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> Private transport around Bogotá</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="daynum">03</div>
+          <div>
+            <h4>La Palma y El Tucán: innovation, science &amp; processing</h4>
+            <div class="happens">
+              <ul>
+                <li>Fermentation-process comparison session; tasting flawed vs excellent cups</li>
+                <li>Hands-on lab access for sensory evaluation</li>
+                <li>Guided tour of plantations, fermentation and drying areas, ending with a specialty tasting in the lab</li>
+                <li>Introduction to the Biodiversal regenerative-agriculture initiative</li>
+              </ul>
+            </div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Stay</span> La Palma y El Tucán Hotel</div>
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">B</span><span class="meal-chip">L</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> ~90 min from Bogotá</div>
+            </div>
+            <div class="extra-note">Optional: mountain biking, birdwatching, ecological trail walks, massage</div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="daynum">04</div>
+          <div>
+            <h4>Transfer to the Coffee Region + "Coffee in the Clouds"</h4>
+            <div class="happens">
+              <ul>
+                <li>Early transfer to the Coffee Region (~7 hours, with rest stops)</li>
+                <li>Hands-on coffee harvesting with a local producer at "Coffee in the Clouds" (1,650m) — a farm that receives visitors only by private request</li>
+                <li>Farm-to-table lunch, then a 7-course tasting-menu dinner with pairings by a local chef</li>
+              </ul>
+            </div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Stay</span> Casa Rivera del Cacao</div>
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">B</span><span class="meal-chip">L</span><span class="meal-chip">D</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> ~7 hrs to region + ~50 min to hotel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="daynum">05</div>
+          <div>
+            <h4>Lacía: boutique export coffee + cacao workshop</h4>
+            <div class="happens">
+              <ul>
+                <li>Visit Lacía Farm, hosted by the second- and third-generation owners — lab, drying process, green-coffee selection, blending exercise, quality control and cupping</li>
+                <li>Cacao workshop led by the hotel's owner, a Colombian cacao expert — bean fragmentation, shell removal, nib extraction, chocolate fondue</li>
+              </ul>
+            </div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Stay</span> Casa Rivera del Cacao</div>
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">B</span><span class="meal-chip">L</span><span class="meal-chip">D</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> Transfer to Lacía and back</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="daynum">06</div>
+          <div>
+            <h4>Primitivo (women producers) + Buencafé (industrial scale)</h4>
+            <div class="happens">
+              <ul>
+                <li>Meet the fifth-generation Correal family women producers at Primitivo (IWCA members) — five farms, full traceability</li>
+                <li>Visit Buencafé, an industrial freeze-dried coffee facility established 1973, exporting to 60+ countries</li>
+              </ul>
+            </div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Stay</span> Hotel Bourbon Finca del Café, near Pereira</div>
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">B</span><span class="meal-chip">L</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> ~1.5 hrs to Chinchiná + transfer to Pereira</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="daynum">07</div>
+          <div>
+            <h4>Departure</h4>
+            <div class="happens">Transfer to Pereira airport for your onward journey.</div>
+            <div class="meta-row">
+              <div class="item"><span class="lbl">Meals</span> <span class="meals"><span class="meal-chip">B</span></span></div>
+              <div class="item"><span class="lbl">Travel</span> Airport transfer (not included)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARED TO -->
+      <section class="block" id="compare">
+        <h2>How this compares</h2>
+        <p class="lede">Against a typical small-group sightseeing or "coffee tour" trip through Colombia's coffee region.</p>
+        <table class="compare">
+          <thead><tr><th>Typical tour</th><th>This Zeal trip</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Typical tour">Café visits, scenic farm tour</td><td class="zeal" data-label="This Zeal trip">Q-grade lab access + a private-request-only working farm + an export blending session</td></tr>
+            <tr><td data-label="Typical tour">General local guides</td><td class="zeal" data-label="This Zeal trip">Named farm owners, IWCA women producers, a champion barista</td></tr>
+            <tr><td data-label="Typical tour">Watch and taste</td><td class="zeal" data-label="This Zeal trip">Harvest, cup, blend, evaluate</td></tr>
+            <tr><td data-label="Typical tour">Surface-level introduction</td><td class="zeal" data-label="This Zeal trip">Q-grader method, fermentation science, export quality control</td></tr>
+            <tr><td data-label="Typical tour">Often 15–30+ guests</td><td class="zeal" data-label="This Zeal trip">Capped at 6–10</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- INCLUSIONS -->
+      <section class="block" id="included">
+        <h2>What's included</h2>
+        <div class="inc-grid">
+          <ul class="inc-list yes">
+            <li><span class="mark">✓</span> Accommodation as listed each night, all with breakfast</li>
+            <li><span class="mark">✓</span> All meals as specified in the day-by-day</li>
+            <li><span class="mark">✓</span> Every farm visit, tasting and workshop named in the itinerary</li>
+            <li><span class="mark">✓</span> Entrance fees for all included visits</li>
+            <li><span class="mark">✓</span> Private transport and English-speaking guides throughout</li>
+            <li><span class="mark">✓</span> 2 tour leaders for the whole trip</li>
+          </ul>
+          <ul class="inc-list no">
+            <li><span class="mark">–</span> International &amp; domestic flights</li>
+            <li><span class="mark">–</span> Arrival and departure private transfers</li>
+            <li><span class="mark">–</span> Tips</li>
+            <li><span class="mark">–</span> Unlisted meals, drinks and services</li>
+            <li><span class="mark">–</span> Optional extras (see itinerary)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PRACTICAL FACTS -->
+      <section class="block" id="facts">
+        <h2>Good to know</h2>
+        <div class="facts-grid">
+          <div class="fact-cell"><div class="k">Group size</div><div class="v">6–10 guests</div></div>
+          <div class="fact-cell"><div class="k">Physical level</div><div class="v">Easy–moderate</div></div>
+          <div class="fact-cell"><div class="k">Who it's for</div><div class="v">Serious coffee drinkers and enthusiasts — no technical experience needed</div></div>
+          <div class="fact-cell"><div class="k">Not for</div><div class="v">Guests wanting a relaxed sightseeing holiday, or averse to one long (~7hr) travel day</div></div>
+          <div class="fact-cell"><div class="k">Season</div><div class="v">Low Season 2027 (dates tbc)</div></div>
+          <div class="fact-cell"><div class="k">Accommodation</div><div class="v">Standard comfort — one night in a farm cabin</div></div>
+          <div class="fact-cell"><div class="k">Start point</div><div class="v">Hotel B.O.G, Bogotá</div></div>
+          <div class="fact-cell"><div class="k">End point</div><div class="v">Hotel Bourbon Finca del Café, near Pereira</div></div>
+          <div class="fact-cell"><div class="k">Arrival airport</div><div class="v">Bogotá (BOG)</div></div>
+          <div class="fact-cell"><div class="k">Departure airport</div><div class="v">Pereira (Matecaña)</div></div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="block" id="faq">
+        <h2>Adventure FAQs</h2>
+        <details class="faq" open>
+          <summary>Do I need any experience?</summary>
+          <p>No. It starts from a sensory "baptism" and builds up — made for keen drinkers who want real depth, not trained baristas only.</p>
+        </details>
+        <details class="faq">
+          <summary>What makes this different from a normal tour?</summary>
+          <p>You get inside places enthusiasts can't book — a Q-grade lab, a private-access farm, an export blending session, IWCA women producers — and you do the work rather than watch.</p>
+        </details>
+        <details class="faq">
+          <summary>How many people are in the group?</summary>
+          <p>A small group of 6–10, plus two tour leaders.</p>
+        </details>
+        <details class="faq">
+          <summary>What's included in the price?</summary>
+          <p>Accommodation, breakfasts and listed meals, all farm visits and tastings, entrance fees, private transport for tours, English-speaking guides. Flights, arrival/departure transfers and tips are extra.</p>
+        </details>
+        <details class="faq">
+          <summary>Who is this trip for?</summary>
+          <p>Coffee-obsessed travellers who want to leave materially more expert — comfortable with early starts and one long travel day.</p>
+        </details>
+        <details class="faq">
+          <summary>When does it run?</summary>
+          <p>Low season 2027; specific dates to be confirmed.</p>
+        </details>
+        <details class="faq">
+          <summary>How do I get there?</summary>
+          <p>Fly into Bogotá (BOG); depart from Pereira. International and domestic flights aren't included.</p>
+        </details>
+        <details class="faq">
+          <summary>Will I actually learn to cup and score coffee like a Q-grader?<span class="faq-tag">Trip-specific</span></summary>
+          <p>Yes — you get direct, hands-on lab access at a farm that hosts the official Q Grader and Q Processing certifications, with sessions built around comparing fermentation processes and tasting flawed against excellent cups.</p>
+        </details>
+        <details class="faq">
+          <summary>Do we visit real working farms, or just tourist-facing "coffee experiences"?<span class="faq-tag">Trip-specific</span></summary>
+          <p>Both, deliberately contrasted — from an industry-training lab, to a farm that only receives visitors by private request, to a fifth-generation family operation, through to an industrial exporter processing beans for 60+ countries.</p>
+        </details>
+        <details class="faq">
+          <summary>Is there a single supplement if I'm travelling solo?<span class="faq-tag">Trip-specific</span></summary>
+          <p>Yes, there's a single-room surcharge — ask Zeal for the current rate.</p>
+        </details>
+      </section>
+
+    </div>
+
+    <!-- STICKY SIDEBAR -->
+    <div class="side">
+      <div class="price-card">
+        <div class="from">7 days from</div>
+        <div class="amount">$4,025<sup> pp</sup></div>
+        <div class="price-note">Indicative — final pricing tbc</div>
+        <div class="price-facts">
+          <div class="row"><span>Duration</span><b>7 days / 6 nights</b></div>
+          <div class="row"><span>Group size</span><b>6–10 guests</b></div>
+          <div class="row"><span>Pace</span><b>Easy–moderate</b></div>
+          <div class="row"><span>Next departure</span><b>Low season 2027</b></div>
+        </div>
+        <a href="#" class="btn-primary">Enquire about this trip</a>
+        <a href="#faq" class="btn-secondary">Read the FAQs</a>
+        <div class="trust-line">Small group · Expert-led · No hidden extras</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    Zeal — product page structural mockup · built from the current Colombia Coffee intake file · for internal review only
+  </div>
+</footer>
+
+<script>
+  const stops = [
+    {name:"Bogotá", sub:"Nights 1–2 · Hotel B.O.G", lat:4.6693648, lng:-74.0500474, start:true},
+    {name:"Zipacón", sub:"Night 3 · La Palma y El Tucán", lat:4.7175416, lng:-74.4093836},
+    {name:"Coffee Region (Córdoba, Quindío)", sub:"Nights 4–5 · Casa Rivera del Cacao", lat:4.3947872, lng:-75.7215889},
+    {name:"Near Pereira", sub:"Night 6 · Hotel Bourbon, Finca del Café", lat:4.9029007, lng:-75.6193944},
+  ];
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  const map = L.map('route-map', {
+    scrollWheelZoom:false, zoomControl:false,
+    dragging: !isTouch, tap: !isTouch
+  }).setView([4.6,-74.9], 7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution:'&copy; OpenStreetMap &copy; CARTO', maxZoom:18
+  }).addTo(map);
+  L.control.zoom({position:'bottomright'}).addTo(map);
+
+  const latlngs = stops.map(s => [s.lat, s.lng]);
+  const routeLine = L.polyline(latlngs, {color:'#E85D26', weight:2.5, dashArray:'1,7', lineCap:'round'}).addTo(map);
+
+  // Directional arrows along the route
+  L.polylineDecorator(routeLine, {
+    patterns: [{
+      offset: '6%', repeat: '11%',
+      symbol: L.Symbol.arrowHead({
+        pixelSize: 9,
+        polygon: true,
+        pathOptions: {stroke:false, fillOpacity:1, color:'#E85D26'}
+      })
+    }]
+  }).addTo(map);
+
+  // Transfer legs — mode + duration, from the itinerary's travel-time fields
+  const legs = [
+    {duration:"~90 min", mode:"drive"},
+    {duration:"~7 hrs", mode:"drive"},
+    {duration:"~1.5–2 hrs", mode:"drive"},
+  ];
+  const carSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E85D26" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm14 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0ZM3 17V11l2-5h10l3 5v6"/></svg>`;
+  legs.forEach((leg, i) => {
+    const midLat = (stops[i].lat + stops[i+1].lat) / 2;
+    const midLng = (stops[i].lng + stops[i+1].lng) / 2;
+    const badge = L.divIcon({
+      className:'', iconSize:null,
+      html:`<div class="transfer-badge">${carSvg}${leg.duration} by road</div>`
+    });
+    L.marker([midLat, midLng], {icon:badge, interactive:false}).addTo(map);
+  });
+
+  stops.forEach(s => {
+    const icon = L.divIcon({
+      className:'', html:`<div class="stop-pin-hit"><div class="stop-pin${s.start ? ' start' : ''}"></div></div>`,
+      iconSize:[44,44], iconAnchor:[22,22]
+    });
+    L.marker([s.lat, s.lng], {icon}).addTo(map)
+      .bindPopup(`<b>${s.name}</b><br>${s.sub}`);
+  });
+  map.fitBounds(latlngs, {padding:[30,30]});
+
+  // Fix 1: touch-drag scroll trap — tap once to enable panning
+  const veil = document.getElementById('map-touch-veil');
+  if(isTouch && veil){
+    veil.addEventListener('click', () => {
+      map.dragging.enable();
+      map.tap && map.tap.enable();
+      veil.classList.add('hidden');
+    });
+  } else if(veil){
+    veil.remove();
+  }
+
+  // Fix 2: keep the map correctly sized AND correctly zoomed/centered through
+  // orientation changes / resizes. invalidateSize() alone only fixes rendering
+  // for the new container size — it does NOT recalculate zoom, so a route that
+  // fit at one width can end up wider than a narrower container and get
+  // clipped at the edges. Re-running fitBounds() after invalidateSize() fixes
+  // this properly.
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      map.invalidateSize();
+      map.fitBounds(latlngs, {padding:[30,30]});
+    }, 150);
+  });
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      map.invalidateSize();
+      map.fitBounds(latlngs, {padding:[30,30]});
+    }, 250);
+  });
+</script>
+</body>
+</html>

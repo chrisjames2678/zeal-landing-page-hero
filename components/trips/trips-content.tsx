@@ -2,13 +2,18 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { trips, categories } from "@/lib/trips"
+import { categories } from "@/lib/trips"
+import type { ListingTrip } from "@/lib/trips-listing"
 import { TripCard } from "@/components/trip-card"
 import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
 const statusFilters = ["All", "Early Access", "Coming Soon"]
 
-export function TripsContent() {
+interface TripsContentProps {
+  trips: ListingTrip[]
+}
+
+export function TripsContent({ trips }: TripsContentProps) {
   const [activeCategory, setActiveCategory] = useState("All")
   const [activeStatus, setActiveStatus] = useState("All")
   const containerRef = useScrollReveal()

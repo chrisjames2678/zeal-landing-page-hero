@@ -124,3 +124,13 @@
   background: var(--mid);
   border-radius: 4px;
 }
+
+/* Route map (trip detail pages) — overrides for Leaflet's own generated
+   elements, which can't be reached with component classes. */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+}
+.leaflet-popup-content {
+  margin: 9px 12px;
+  font-size: 13px;
+}

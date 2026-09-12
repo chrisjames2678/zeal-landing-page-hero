@@ -2,10 +2,10 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import type { Trip } from "@/lib/trips"
+import type { ListingTrip } from "@/lib/trips-listing"
 
 interface TripCardProps {
-  trip: Trip
+  trip: ListingTrip
 }
 
 export function TripCard({ trip }: TripCardProps) {

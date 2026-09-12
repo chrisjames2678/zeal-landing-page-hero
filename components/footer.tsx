@@ -2,7 +2,7 @@ import Link from "next/link"
 
 const tripLinks = [
   { href: "/trips/pizza", label: "Zeal: Pizza" },
-  { href: "/trips/coffee", label: "Zeal: Coffee" },
+  { href: "/trips/colombia-coffee", label: "Zeal: Colombia Coffee" },
   { href: "/trips/wellness", label: "Zeal: Wellness" },
   { href: "/trips/tech", label: "Zeal: Tech & Innovation" },
   { href: "/trips/wine", label: "Zeal: Wine" },
@@ -86,7 +86,7 @@ export function Footer() {
             </h4>
             <ul className="flex flex-col gap-2.5">
               {legalLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-[0.85rem] hover:text-zeal-white transition-colors"

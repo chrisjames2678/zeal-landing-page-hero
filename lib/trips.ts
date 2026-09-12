@@ -73,66 +73,6 @@ You'll return home not just knowing how to make better pizza — but understandi
     ],
   },
   {
-    slug: "coffee",
-    title: "Zeal: Coffee",
-    location: "Colombia",
-    duration: "7 days",
-    category: "Food & Craft",
-    status: "Early Access",
-    description:
-      "Seed to cup in the Coffee Triangle. Farm visits, processing, roasting, and tasting with the people who grow it.",
-    longDescription: `Colombia's Coffee Triangle is where some of the world's most celebrated coffee is grown, processed, and perfected. This trip takes you from the mountainside farms where cherry is picked by hand to the roasteries and tasting rooms where it becomes the cup you know.
-
-Over seven days, you'll walk the plantations with the families who've farmed them for generations, learn the science of altitude, soil, and processing methods, and develop your palate through structured cuppings with professional Q graders. You'll roast your own beans, visit cooperatives, and understand the economics and culture that shape every bag of Colombian coffee.
-
-You'll come home seeing your morning cup completely differently.`,
-    image: "/images/trips/coffee.jpg",
-    itinerary: [
-      {
-        day: "Day 1",
-        title: "Arrival & Welcome",
-        description:
-          "Arrive in Armenia or Pereira. Transfer to Coffee Triangle accommodation. Welcome dinner. Group introductions.",
-      },
-      {
-        day: "Day 2",
-        title: "The Farm",
-        description:
-          "Full day on a working coffee farm. Cherry picking, wet processing, drying. Meet the farming family. Lunch on the farm.",
-      },
-      {
-        day: "Day 3",
-        title: "Processing & Science",
-        description:
-          "Visit a cooperative processing facility. Learn about altitude, soil, varietals. Afternoon cupping session with a Q grader.",
-      },
-      {
-        day: "Day 4",
-        title: "The Roast",
-        description:
-          "Morning at a local roastery. Learn roast profiles and roast your own batch. Afternoon visit to a second farm with different processing methods.",
-      },
-      {
-        day: "Day 5",
-        title: "The Culture",
-        description:
-          "Explore the town markets. Visit the coffee museum. Meet young Colombian entrepreneurs building specialty coffee brands. Evening salsa lesson.",
-      },
-      {
-        day: "Day 6",
-        title: "The Cup",
-        description:
-          "Advanced tasting session. Compare regions, processes, and roast levels. Afternoon free to explore the Cocora Valley and its wax palms.",
-      },
-      {
-        day: "Day 7",
-        title: "Farewell",
-        description:
-          "Morning reflection and group discussion. Final coffee ceremony. Departures.",
-      },
-    ],
-  },
-  {
     slug: "wellness",
     title: "Zeal: Wellness",
     location: "Thailand",
